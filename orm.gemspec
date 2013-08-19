@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Orm::VERSION
   spec.authors       = ["Noah Gibbs"]
   spec.email         = ["noah_gibbs@yahoo.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{A demo ORM.}
+  spec.summary       = %q{A demo ORM.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -20,4 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "minitest"
+
+  spec.add_runtime_dependency "sqlite3"
 end
