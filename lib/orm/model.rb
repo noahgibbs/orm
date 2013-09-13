@@ -17,20 +17,14 @@ module ORM; class Model
     name.downcase
   end
 
-  def self.to_sql(value)
-    return "null" if value.nil?
-    return value.to_s if value.is_a?(Numeric)
-    value.inspect
-  end
-
   def self.insert(vals)
     k = schema.keys
-    v = k.map { |key| to_sql(vals[key]) }
+    v = k.map { |key| vals[key] }
 
-    DB.execute <<-SQL
+    DB.execute <<-SQL, v
       INSERT INTO #{name.downcase}
       (#{k.join ","})
-      VALUES (#{v.join ","});
+      VALUES (#{k.map { '?' }.join ','});
     SQL
   end
 
@@ -41,7 +35,7 @@ module ORM; class Model
   def self.find(id)
     row = DB.execute <<-SQL
       select #{schema.keys.join ","} from #{table}
-      where id = #{id};
+      where id = #{id.to_i};
     SQL
     data = Hash[schema.keys.zip row[0]]
     self.new data
@@ -56,14 +50,14 @@ module ORM; class Model
   end
 
   def update!
-    fields = @hash.map do |k, v|
-      "#{k}=#{self.class.to_sql(v)}"
-    end
+    k = @hash.keys - ["id"]
+    sql_k = k.map { |key| "#{key}=?" }
+    v = k.map { |key| @hash[key] }
 
-    DB.execute <<-SQL
+    DB.execute <<-SQL, v
       UPDATE #{self.class.table}
-      SET #{fields.join ","}
-      WHERE id = #{@hash["id"]}
+      SET #{sql_k.join ","}
+      WHERE id = #{@hash["id"].to_i}
     SQL
   end
 
@@ -74,6 +68,14 @@ module ORM; class Model
     sql = "SELECT last_insert_rowid()"
     new_id = DB.execute(sql)[0][0]
     self.find new_id
+  end
+
+  def delete!
+    DB.execute <<-SQL
+      DELETE FROM #{self.class.table}
+      WHERE id = #{@hash["id"].to_i}
+    SQL
+    @hash = {}
   end
 
 end; end

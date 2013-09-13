@@ -86,4 +86,20 @@ class TestORM < MiniTest::Unit::TestCase
     assert_equal "T2", p["title"]
     assert_equal 5, p["rating"]
   end
+
+  def test_delete
+    p = Posts.create "title" => "T1", "rating" => 7
+
+    row = @db.execute <<-SQL
+      SELECT COUNT(*) from posts;
+    SQL
+    assert_equal 1, row[0][0]
+
+    p.delete!
+
+    row = @db.execute <<-SQL
+      SELECT COUNT(*) from posts;
+    SQL
+    assert_equal 0, row[0][0]
+  end
 end
