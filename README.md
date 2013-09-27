@@ -1,24 +1,18 @@
 # Orm
 
-TODO: Write a gem description
+This is the ORM code developed as a demo for my talk "The Littlest
+ORM", first for GoGaRuCo 2013 and later for other talks.
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'orm'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install orm
+So if it has an extra few features from what you remember, that's
+probably why.
 
 ## Usage
 
-TODO: Write usage instructions here
+Just run "bundle exec ruby test/test_orm.rb".
+
+That runs all the tests and verifies that it works.  And that's
+basically the usage.  Mostly it's a demo, but tests prove that the
+demo works!
 
 ## Contributing
 
