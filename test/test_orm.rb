@@ -102,4 +102,18 @@ class TestORM < MiniTest::Unit::TestCase
     SQL
     assert_equal 0, row[0][0]
   end
+
+  # This isn't for the GoGaRuCo version of the talk,
+  # but you can still enjoy it ;-)
+  def test_method_missing
+    p = Posts.create "title" => "Why You Suck"
+
+    assert_equal "Why You Suck", p.title
+
+    p.title = "Why I Rock"
+    p.update!
+
+    p2 = Posts.find(p.id)
+    assert_equal "Why I Rock", p2.title
+  end
 end
